@@ -1,0 +1,32 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Create GoldenOTT User</title>
+<style>
+  body { font: 16px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding:2rem; }
+  label { display:block; margin:.6rem 0 .2rem }
+  input, select { padding:.3rem .4rem; }
+  button { padding:.4rem .8rem; margin-top:1rem }
+</style>
+
+<h2>Create GoldenOTT User</h2>
+
+<form action="/create" method="post">
+  <label>Username
+    <input name="username" required pattern="[A-Za-z0-9]{7,}" title="Letters and numbers, min 7 characters" minlength="7">
+  </label>
+
+  <label>Password
+    <input name="password" required>
+  </label>
+
+  <label>Forced Country
+    <select name="forced_country">
+      <option value="Auto" selected>Auto</option>
+      <option value="VPN">VPN</option>
+    </select>
+  </label>
+
+  <label><input type="checkbox" name="adult"> Adult flag</label>
+
+  <button>Create</button>
+</form>
