@@ -105,6 +105,7 @@ async def got_adult_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     p = context.user_data["password"]
     fc = context.user_data["forced_country"]
 
+    # Hide the buttons (double‑tap safe)
     try:
         await q.edit_message_reply_markup(None)
     except BadRequest:
@@ -112,19 +113,41 @@ async def got_adult_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await q.message.reply_text("⏳ Working…")
 
+    success = False
     try:
         html_response = await asyncio.to_thread(goldenott_create, u, p, adult_flag, fc)
-
         soup = BeautifulSoup(html_response, "html.parser")
         err_div = soup.select_one("div.alert-danger")
         if err_div:
             text = err_div.get_text(" ", strip=True)
             await q.message.reply_text(f"❌ Error: {text}")
         else:
+            success = True
             await q.message.reply_text("✅ User created successfully!")
-
     except Exception as exc:
         await q.message.reply_text(f"❌ Error: {exc}")
+
+    # ---- Consolidated credential & links block ---------------------------
+    info_msg = (
+        f"Username : {u}\n"
+        f"Password : {p}\n"
+        f"actived : 1 day trial\n"
+        f"\nThe URL :\n\n"
+        f"http://gndk28.xyz:80\n"
+        f"http://activefrance.net\n"
+        f"http://atg100.xyz\n"
+        f"http://teck-tv.com\n"
+        f"http://tripleserver3.com:80\n"
+        f"http://xrf98.com\n"
+        f"http://likan.me\n"
+        f"\nM3U Link : http://gndk28.xyz/get.php?username={u}&password={p}&type=m3u_plus&output=mpegts\n"
+        f"\nApk link : https://up.goldenott.net\n"
+        f"\nSAMSUNG/LG IPTV SMARTERS DNS : http://line.4smart.in\n"
+        f"\nMag portal : http://gndk28.xyz/c\n"
+        f"\nSAMSUNG/LG IPTV SMARTERS DNS : http://activefrance.net"
+    )
+    await q.message.reply_text(info_msg)
+    # ---------------------------------------------------------------------
 
     return ConversationHandler.END
 
